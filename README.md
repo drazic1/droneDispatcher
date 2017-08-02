@@ -41,7 +41,7 @@ but this is not allowed:
 You can make the following simplifying assumptions:
 
 - Drones have unlimited range
-- Drones travel at a fixed speed of 20km/h
+- Drones travel at a fixed speed of 50km/h
 - Packages are all the same weight and volume
 - Packages can be delivered early
 - Drones can only carry one item at a time
