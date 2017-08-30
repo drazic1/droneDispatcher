@@ -123,7 +123,7 @@ As a rough guide, we look at the following points to assess an analysis:
 1. Are there any logical errors?
 2. Are there any outright factual errors?
 3. Are important tradeoffs identified and analysed? Is the effort put into each tradeoff proportionate to its severity, or is a lot of time spent on analysing a trivial problem, while more pressing concerns are left untouched?
-4. What doesn't the analysis cover? How is the scope of the solution framed? Do we get a get sense of where the solution is situated in the solution space, and where we can we move to?
+4. What doesn't the analysis cover? How is the scope of the solution framed? Do we get a sense of where the solution is situated in the solution space, and where we can we move to?
 
 ## Submission
 Please create a *new repository* (don't fork this one) and then email the url to joash at getswift dot co, prefixing the subject with `CODETEST:`
