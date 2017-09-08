@@ -1,11 +1,19 @@
-# GetSwift Code Test
-This code test is divided into two parts, a code writing portion, and an analysis portion, where you'll discuss your implementation and how it can be extended.
+# GetSwift Drone Delivery
+
+## Installation
+npm install
+
+## Run solution
+npm start
+
+## Dependencies
+The solution makes use of node-fetch which implements the new ES6 Promises to make API requests. A version of node.js v4 or newer is therefore required for the solution to work properly.
 
 ## The scenario
 You run a drone delivery company. Packages arrive at your depo to be delivered by your fleet of drones.
 
 ## The problem
-Your solution should take two inputs: a list of drones, and a list of packages; and produce two outputs: a list of assignments of packages to drones, and a list of packages that could not be assigned. For example, you could produce the following output:
+The solution should take two inputs: a list of drones, and a list of packages; and produce two outputs: a list of assignments of packages to drones, and a list of packages that could not be assigned. For example, it could produce the following output:
 
 ```javascript
 {
@@ -15,7 +23,7 @@ Your solution should take two inputs: a list of drones, and a list of packages; 
 ```
 
 ### Constraints
-There's a number of constraints that your solution must obey:
+There's a number of constraints that the solution must obey:
 
 - The depo is located at 303 Collins Street, Melbourne, VIC 3000
 - Drones might already be carrying a package. The time to deliver this package should be taken into account when comparing drones.
@@ -38,7 +46,7 @@ but this is not allowed:
 ```
 
 ### Assumptions
-You can make the following simplifying assumptions:
+Simplifying assumptions:
 
 - Drones have unlimited range
 - Drones travel at a fixed speed of 50km/h
@@ -46,12 +54,12 @@ You can make the following simplifying assumptions:
 - Packages can be delivered early
 - Drones can only carry one item at a time
 
-You should integrate with [this API](https://codetest.kube.getswift.co/drones) which generates randomized data.
+Solution should integrate with [this API](https://codetest.kube.getswift.co/drones) which generates randomized data.
 
-You can use any language and/or framework to solve this. Please also give an indication of how you envisage your solution will be deployed, and what other components it might interact with.
+Use any language and/or framework to solve this. Please also give an indication of how you envisage your solution will be deployed, and what other components it might interact with.
 
 ## The API
-The API lives at https://codetest.kube.getswift.co/drones. You'll need to use two methods:
+The API lives at https://codetest.kube.getswift.co/drones. Two methods:
 
 ### `GET /drones`
 This returns a randomized list of drones. A drone can have up to one package assigned to it.
@@ -87,7 +95,7 @@ This returns a randomized list of drones. A drone can have up to one package ass
 ```
 
 ### `GET /packages`
-This returns a randomized list of packages. You will need to assign the packages from this endpoint to the drones returned from the other endpoint. The deadline here is a Unix timestamp.
+This returns a randomized list of packages. Solution assigns the packages from this endpoint to the drones returned from the other endpoint. The deadline here is a Unix timestamp.
 
 ```javascript
 [
@@ -114,8 +122,21 @@ This returns a randomized list of packages. You will need to assign the packages
 After you've implemented your solution, try answering the following questions. We're not really looking for a particular answer; we're more interested in how well you understand your choices, and how well you can justify them.
 
 - How did you implement your solution?
+
+I chose Node.js and Javascript to develop my solution. The main reason to do this was that Javascrit is the programming language I feel more comfortable with. 
+In short, the main algorithm of my solution takes the list of packages and sorts them by priority (priority being the remaining time to be delivered). Similarly takes the list of drones and sorts them based on how fast they can be ready to deliver a package (since some of them need to first make a another delivery and come back to the depo and others need to at least come to the depo). As a last step, the algotrithm goes package by package and assigns it to the drone that can deliver it faster.
+
 - Why did you implement it this way?
+
+The first solution that came to mind was a brute force one in which you loop through all the packages looking for the one with the highest priority. Once you find it, you loop through all the drones trying to look for the one that can deliver that package faster.
+Assuming n represents the number of drones and k the number of packages, this process would take ((O(n)+O(k)) * O(k)) ~= O(k^2) time to run since you need to loop through all the packages and all the drones everytime for every package.
+In these cases, I like to use a more expensive algorithm first (such as the sort one) to gain on the consecutive searches. This gave me the solution I described in the previous question and the one I implemented. The complexity of this solution is O(k*logk) + O(k) + O(n*logn) + O(n) which is faster than the brute force. The log terms of the equation correspond to the sorting parts and the (n) and (k) ones to the calculating priority parts.
+
+At an architectural level, I implemented the solution mainly as a Dispatcher class. The reason to do it this way was thinking about potentially having several depos. Each dispatcher would be assigned to a depo (one new dispatcher object per depo) and it would control deliveries performed from that depo. The algorithm in index.js just creates the dispatcher and calls the actions.
+
 - Let's assume we need to handle dispatching thousands of jobs per second to thousands of drivers. Would the solution you've implemented still work? Why or why not? What would you modify? Feel free to describe a completely different solution than the one you've developed.
+
+For the solution to handle several thousdands of dispatches per second, I would probably use a different data structure like a heap to keep track of available drones and another heap for packages to be delivered. This way, all new "packages to be dispatches" and "available drones" that we receive, can be inserted into the sorted heap relatively cheap (O(logn)) compared to having to sort the queues each time (O(nlogn)). This solution would work best together with an API that would return only those drones that have not been assigned to a package and packages that have not being assigned to a drone yet by the dispatcher, so that they can be added to the dispatcher's internal data structures, the heaps.     
 
 ### Assessment
 As a rough guide, we look at the following points to assess an analysis:

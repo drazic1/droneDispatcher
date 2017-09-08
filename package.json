@@ -1,0 +1,24 @@
+{
+  "name": "codetest",
+  "version": "1.0.0",
+  "description": "This code test is divided into two parts, a code writing portion, and an analysis portion, where you'll discuss your implementation and how it can be extended.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GetSwift/codetest.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GetSwift/codetest/issues"
+  },
+  "homepage": "https://github.com/GetSwift/codetest#readme",
+  "dependencies": {
+    "node-fetch": "^1.7.2"
+  }
+}
